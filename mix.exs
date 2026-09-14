@@ -1,7 +1,7 @@
 defmodule Commanded.Mixfile do
   use Mix.Project
 
-  @version "3.7.1"
+  @version "3.8.0"
   @source_url "https://github.com/TrogonStack/commanded"
 
   def project do
