@@ -1,199 +1,199 @@
 # Changelog
 
-## [3.7.1](https://github.com/straw-hat-team/commanded/compare/v3.7.0...v3.7.1) (2026-05-14)
+## [3.7.1](https://github.com/TrogonStack/commanded/compare/v3.7.0...v3.7.1) (2026-05-14)
 
 
 ### Bug Fixes
 
-* **dispatcher:** Honor caller-supplied :causation_id on persisted events ([#103](https://github.com/straw-hat-team/commanded/issues/103)) ([13f88f3](https://github.com/straw-hat-team/commanded/commit/13f88f3e427c8525b76c536f4e5b52590a481254))
-* **dispatcher:** Preserve retry failure guarantees ([#96](https://github.com/straw-hat-team/commanded/issues/96)) ([7a07792](https://github.com/straw-hat-team/commanded/commit/7a07792542999c66d0930964b43c4c4d4704c557))
-* **telemetry:** Rename commanded.handler.lag to commanded.handler.processing_latency ([#95](https://github.com/straw-hat-team/commanded/issues/95)) ([8198884](https://github.com/straw-hat-team/commanded/commit/8198884e5590a093baba03a92008698a0c10bcd3))
-* **test:** Restore full suite projection bootstrap ([#99](https://github.com/straw-hat-team/commanded/issues/99)) ([945b1cf](https://github.com/straw-hat-team/commanded/commit/945b1cf19846598d2fba901061a7df747341a001))
+* **dispatcher:** Honor caller-supplied :causation_id on persisted events ([#103](https://github.com/TrogonStack/commanded/issues/103)) ([13f88f3](https://github.com/TrogonStack/commanded/commit/13f88f3e427c8525b76c536f4e5b52590a481254))
+* **dispatcher:** Preserve retry failure guarantees ([#96](https://github.com/TrogonStack/commanded/issues/96)) ([7a07792](https://github.com/TrogonStack/commanded/commit/7a07792542999c66d0930964b43c4c4d4704c557))
+* **telemetry:** Rename commanded.handler.lag to commanded.handler.processing_latency ([#95](https://github.com/TrogonStack/commanded/issues/95)) ([8198884](https://github.com/TrogonStack/commanded/commit/8198884e5590a093baba03a92008698a0c10bcd3))
+* **test:** Restore full suite projection bootstrap ([#99](https://github.com/TrogonStack/commanded/issues/99)) ([945b1cf](https://github.com/TrogonStack/commanded/commit/945b1cf19846598d2fba901061a7df747341a001))
 
-## [3.7.0](https://github.com/straw-hat-team/commanded/compare/v3.6.1...v3.7.0) (2026-04-21)
+## [3.7.0](https://github.com/TrogonStack/commanded/compare/v3.6.1...v3.7.0) (2026-04-21)
 
 
 ### Features
 
-* **telemetry:** Propagate caller trace context to aggregate load spans ([#90](https://github.com/straw-hat-team/commanded/issues/90)) ([9a6ee07](https://github.com/straw-hat-team/commanded/commit/9a6ee0702f4a91bdba705b682c1b0bc270900c19))
+* **telemetry:** Propagate caller trace context to aggregate load spans ([#90](https://github.com/TrogonStack/commanded/issues/90)) ([9a6ee07](https://github.com/TrogonStack/commanded/commit/9a6ee0702f4a91bdba705b682c1b0bc270900c19))
 
 
 ### Bug Fixes
 
-* **telemetry:** Add peer.service and DB semantic attributes to EventStore spans ([#91](https://github.com/straw-hat-team/commanded/issues/91)) ([d09a91e](https://github.com/straw-hat-team/commanded/commit/d09a91e60489d4b3c49a73e7e2ff5e4a74ca09fd))
-* **telemetry:** Enrich EventStore spans with full OTel semantic attributes ([#92](https://github.com/straw-hat-team/commanded/issues/92)) ([0d0763a](https://github.com/straw-hat-team/commanded/commit/0d0763af83f2c0209f387f31fc1b231bacc670c4))
-* **telemetry:** Strip Elixir. prefix from commanded.application attribute ([#93](https://github.com/straw-hat-team/commanded/issues/93)) ([909c484](https://github.com/straw-hat-team/commanded/commit/909c48477fb34444e29e65d0d6a9bd1669354f49))
-* **test:** Keep adapter coverage aligned with EventStore semantics ([#87](https://github.com/straw-hat-team/commanded/issues/87)) ([6aa37fd](https://github.com/straw-hat-team/commanded/commit/6aa37fd70bd87874c9b8e3c3df2788560c34cd5c))
+* **telemetry:** Add peer.service and DB semantic attributes to EventStore spans ([#91](https://github.com/TrogonStack/commanded/issues/91)) ([d09a91e](https://github.com/TrogonStack/commanded/commit/d09a91e60489d4b3c49a73e7e2ff5e4a74ca09fd))
+* **telemetry:** Enrich EventStore spans with full OTel semantic attributes ([#92](https://github.com/TrogonStack/commanded/issues/92)) ([0d0763a](https://github.com/TrogonStack/commanded/commit/0d0763af83f2c0209f387f31fc1b231bacc670c4))
+* **telemetry:** Strip Elixir. prefix from commanded.application attribute ([#93](https://github.com/TrogonStack/commanded/issues/93)) ([909c484](https://github.com/TrogonStack/commanded/commit/909c48477fb34444e29e65d0d6a9bd1669354f49))
+* **test:** Keep adapter coverage aligned with EventStore semantics ([#87](https://github.com/TrogonStack/commanded/issues/87)) ([6aa37fd](https://github.com/TrogonStack/commanded/commit/6aa37fd70bd87874c9b8e3c3df2788560c34cd5c))
 
-## [3.6.1](https://github.com/straw-hat-team/commanded/compare/v3.6.0...v3.6.1) (2026-04-16)
+## [3.6.1](https://github.com/TrogonStack/commanded/compare/v3.6.0...v3.6.1) (2026-04-16)
 
 
 ### Bug Fixes
 
-* **github:** Pin release-please-action to commit SHA ([#85](https://github.com/straw-hat-team/commanded/issues/85)) ([15bbdc5](https://github.com/straw-hat-team/commanded/commit/15bbdc5691019832207a271ed33eda11a526e47b))
-* **telemetry:** Keep event store spans tied to their destination ([#83](https://github.com/straw-hat-team/commanded/issues/83)) ([e4b49a7](https://github.com/straw-hat-team/commanded/commit/e4b49a74b5dc13a18ea27402640285d613625e07))
+* **github:** Pin release-please-action to commit SHA ([#85](https://github.com/TrogonStack/commanded/issues/85)) ([15bbdc5](https://github.com/TrogonStack/commanded/commit/15bbdc5691019832207a271ed33eda11a526e47b))
+* **telemetry:** Keep event store spans tied to their destination ([#83](https://github.com/TrogonStack/commanded/issues/83)) ([e4b49a7](https://github.com/TrogonStack/commanded/commit/e4b49a74b5dc13a18ea27402640285d613625e07))
 
-## [3.6.0](https://github.com/straw-hat-team/commanded/compare/v3.5.0...v3.6.0) (2026-04-16)
+## [3.6.0](https://github.com/TrogonStack/commanded/compare/v3.5.0...v3.6.0) (2026-04-16)
 
 
 ### Features
 
-* **telemetry:** Add registry adapter to aggregate execute span ([#71](https://github.com/straw-hat-team/commanded/issues/71)) ([fdaaa5d](https://github.com/straw-hat-team/commanded/commit/fdaaa5d0b4d373f6a01efd1349fe6156162c76b0))
-* **telemetry:** Keep returned command errors out of failed spans ([#82](https://github.com/straw-hat-team/commanded/issues/82)) ([f586f58](https://github.com/straw-hat-team/commanded/commit/f586f58d8ba284081a0ff9b4e7ae629d7518134f))
+* **telemetry:** Add registry adapter to aggregate execute span ([#71](https://github.com/TrogonStack/commanded/issues/71)) ([fdaaa5d](https://github.com/TrogonStack/commanded/commit/fdaaa5d0b4d373f6a01efd1349fe6156162c76b0))
+* **telemetry:** Keep returned command errors out of failed spans ([#82](https://github.com/TrogonStack/commanded/issues/82)) ([f586f58](https://github.com/TrogonStack/commanded/commit/f586f58d8ba284081a0ff9b4e7ae629d7518134f))
 
 
 ### Bug Fixes
 
-* **dispatch:** Reduce drift in the public return contract ([#74](https://github.com/straw-hat-team/commanded/issues/74)) ([0813343](https://github.com/straw-hat-team/commanded/commit/0813343e3460649744d4876ca6b7b7c60088405d))
-* **dispatch:** Reject invalid command UUID overrides ([#75](https://github.com/straw-hat-team/commanded/issues/75)) ([195a12b](https://github.com/straw-hat-team/commanded/commit/195a12ba90029250d39e4af88ba57fdf094859bc))
-* **subscriptions:** Avoid races in teardown assertions ([#80](https://github.com/straw-hat-team/commanded/issues/80)) ([91a612f](https://github.com/straw-hat-team/commanded/commit/91a612ff7fee4cb42f9fe0618b4baf853d269e27))
-* **telemetry:** Isolate test OpenTelemetry configuration ([#79](https://github.com/straw-hat-team/commanded/issues/79)) ([2b0a739](https://github.com/straw-hat-team/commanded/commit/2b0a739680f04823b70de7b28843d3441f97ac4d))
-* **test:** Keep projection setup out of unrelated runs ([#81](https://github.com/straw-hat-team/commanded/issues/81)) ([ea80428](https://github.com/straw-hat-team/commanded/commit/ea804280f5d54a930ac4302460dc6aea06649c4f))
-* **types:** Align execution result metadata with dispatch contract ([#77](https://github.com/straw-hat-team/commanded/issues/77)) ([2ebcd07](https://github.com/straw-hat-team/commanded/commit/2ebcd07d42fd17132347ec98beac4e1e21ce86da))
-* **types:** Keep failure context strict ([#78](https://github.com/straw-hat-team/commanded/issues/78)) ([47db0d2](https://github.com/straw-hat-team/commanded/commit/47db0d20e290e084323e4daeb63939c584a25916))
-* **types:** Prevent invalid dispatch metadata from bypassing Dialyzer ([#73](https://github.com/straw-hat-team/commanded/issues/73)) ([495f886](https://github.com/straw-hat-team/commanded/commit/495f886a1619e3b2ae5d763554553693abf118ab))
-* **types:** Strengthen dispatch struct contracts for Dialyzer ([#76](https://github.com/straw-hat-team/commanded/issues/76)) ([c677d4c](https://github.com/straw-hat-team/commanded/commit/c677d4c6d9b9f9a0873121631893d7ce5db963f7))
+* **dispatch:** Reduce drift in the public return contract ([#74](https://github.com/TrogonStack/commanded/issues/74)) ([0813343](https://github.com/TrogonStack/commanded/commit/0813343e3460649744d4876ca6b7b7c60088405d))
+* **dispatch:** Reject invalid command UUID overrides ([#75](https://github.com/TrogonStack/commanded/issues/75)) ([195a12b](https://github.com/TrogonStack/commanded/commit/195a12ba90029250d39e4af88ba57fdf094859bc))
+* **subscriptions:** Avoid races in teardown assertions ([#80](https://github.com/TrogonStack/commanded/issues/80)) ([91a612f](https://github.com/TrogonStack/commanded/commit/91a612ff7fee4cb42f9fe0618b4baf853d269e27))
+* **telemetry:** Isolate test OpenTelemetry configuration ([#79](https://github.com/TrogonStack/commanded/issues/79)) ([2b0a739](https://github.com/TrogonStack/commanded/commit/2b0a739680f04823b70de7b28843d3441f97ac4d))
+* **test:** Keep projection setup out of unrelated runs ([#81](https://github.com/TrogonStack/commanded/issues/81)) ([ea80428](https://github.com/TrogonStack/commanded/commit/ea804280f5d54a930ac4302460dc6aea06649c4f))
+* **types:** Align execution result metadata with dispatch contract ([#77](https://github.com/TrogonStack/commanded/issues/77)) ([2ebcd07](https://github.com/TrogonStack/commanded/commit/2ebcd07d42fd17132347ec98beac4e1e21ce86da))
+* **types:** Keep failure context strict ([#78](https://github.com/TrogonStack/commanded/issues/78)) ([47db0d2](https://github.com/TrogonStack/commanded/commit/47db0d20e290e084323e4daeb63939c584a25916))
+* **types:** Prevent invalid dispatch metadata from bypassing Dialyzer ([#73](https://github.com/TrogonStack/commanded/issues/73)) ([495f886](https://github.com/TrogonStack/commanded/commit/495f886a1619e3b2ae5d763554553693abf118ab))
+* **types:** Strengthen dispatch struct contracts for Dialyzer ([#76](https://github.com/TrogonStack/commanded/issues/76)) ([c677d4c](https://github.com/TrogonStack/commanded/commit/c677d4c6d9b9f9a0873121631893d7ce5db963f7))
 
-## [3.5.0](https://github.com/straw-hat-team/commanded/compare/v3.4.1...v3.5.0) (2026-04-05)
+## [3.5.0](https://github.com/TrogonStack/commanded/compare/v3.4.1...v3.5.0) (2026-04-05)
 
 
 ### Features
 
-* **telemetry:** Add aggregate_module to load/populate/snapshot telemetry metadata ([#69](https://github.com/straw-hat-team/commanded/issues/69)) ([78bcfe7](https://github.com/straw-hat-team/commanded/commit/78bcfe73940c49a1e8650292afabaac5f8d26962))
-* **telemetry:** Add and surface processing_latency_ms in event handler spans ([#68](https://github.com/straw-hat-team/commanded/issues/68)) ([ffaafcf](https://github.com/straw-hat-team/commanded/commit/ffaafcf472c8f98d398bf202550c070adf77b1d2))
-* **telemetry:** Add processing_latency_ms to event handler stop measurements ([#66](https://github.com/straw-hat-team/commanded/issues/66)) ([edbe23e](https://github.com/straw-hat-team/commanded/commit/edbe23e2528ac23f8c7e7c7bd3bea32ab7cd6f4a))
+* **telemetry:** Add aggregate_module to load/populate/snapshot telemetry metadata ([#69](https://github.com/TrogonStack/commanded/issues/69)) ([78bcfe7](https://github.com/TrogonStack/commanded/commit/78bcfe73940c49a1e8650292afabaac5f8d26962))
+* **telemetry:** Add and surface processing_latency_ms in event handler spans ([#68](https://github.com/TrogonStack/commanded/issues/68)) ([ffaafcf](https://github.com/TrogonStack/commanded/commit/ffaafcf472c8f98d398bf202550c070adf77b1d2))
+* **telemetry:** Add processing_latency_ms to event handler stop measurements ([#66](https://github.com/TrogonStack/commanded/issues/66)) ([edbe23e](https://github.com/TrogonStack/commanded/commit/edbe23e2528ac23f8c7e7c7bd3bea32ab7cd6f4a))
 
-## [3.4.1](https://github.com/straw-hat-team/commanded/compare/v3.4.0...v3.4.1) (2026-04-01)
+## [3.4.1](https://github.com/TrogonStack/commanded/compare/v3.4.0...v3.4.1) (2026-04-01)
 
 
 ### Bug Fixes
 
-* **event_store:** Defer stream_forward telemetry until stream consumed ([#64](https://github.com/straw-hat-team/commanded/issues/64)) ([588b801](https://github.com/straw-hat-team/commanded/commit/588b8014c0803b0463ebb8a5dab47492df128e5a))
+* **event_store:** Defer stream_forward telemetry until stream consumed ([#64](https://github.com/TrogonStack/commanded/issues/64)) ([588b801](https://github.com/TrogonStack/commanded/commit/588b8014c0803b0463ebb8a5dab47492df128e5a))
 
-## [3.4.0](https://github.com/straw-hat-team/commanded/compare/v3.3.2...v3.4.0) (2026-03-13)
+## [3.4.0](https://github.com/TrogonStack/commanded/compare/v3.3.2...v3.4.0) (2026-03-13)
 
 
 ### Features
 
-* Add OpenTelemetry support for aggregate snapshots ([#60](https://github.com/straw-hat-team/commanded/issues/60)) ([d651288](https://github.com/straw-hat-team/commanded/commit/d651288ad026ff9f08becbdde6203861350bc2ff))
-* Add wrong_expected_version span event to aggregate execute OTel ([#61](https://github.com/straw-hat-team/commanded/issues/61)) ([f1f8b1b](https://github.com/straw-hat-team/commanded/commit/f1f8b1ba82a55a5a9e429e2218f4d63c548612eb))
+* Add OpenTelemetry support for aggregate snapshots ([#60](https://github.com/TrogonStack/commanded/issues/60)) ([d651288](https://github.com/TrogonStack/commanded/commit/d651288ad026ff9f08becbdde6203861350bc2ff))
+* Add wrong_expected_version span event to aggregate execute OTel ([#61](https://github.com/TrogonStack/commanded/issues/61)) ([f1f8b1b](https://github.com/TrogonStack/commanded/commit/f1f8b1ba82a55a5a9e429e2218f4d63c548612eb))
 
 
 ### Bug Fixes
 
-* Emit populate telemetry for new aggregates (stream_not_found) ([#58](https://github.com/straw-hat-team/commanded/issues/58)) ([1af575a](https://github.com/straw-hat-team/commanded/commit/1af575a28722585a6375c309b27e8d905014b273))
+* Emit populate telemetry for new aggregates (stream_not_found) ([#58](https://github.com/TrogonStack/commanded/issues/58)) ([1af575a](https://github.com/TrogonStack/commanded/commit/1af575a28722585a6375c309b27e8d905014b273))
 
-## [3.3.2](https://github.com/straw-hat-team/commanded/compare/v3.3.1...v3.3.2) (2026-02-27)
-
-
-### Bug Fixes
-
-* Enable event store OpenTelemetry tracing by default ([#56](https://github.com/straw-hat-team/commanded/issues/56)) ([642ab64](https://github.com/straw-hat-team/commanded/commit/642ab64131d7ff0540924051e5118185ee06ee84))
-
-## [3.3.1](https://github.com/straw-hat-team/commanded/compare/v3.3.0...v3.3.1) (2026-02-26)
+## [3.3.2](https://github.com/TrogonStack/commanded/compare/v3.3.1...v3.3.2) (2026-02-27)
 
 
 ### Bug Fixes
 
-* Use Broadway/Oban pattern for OTel context propagation ([4185ca1](https://github.com/straw-hat-team/commanded/commit/4185ca1da3997de7a7a2813e6943b154172a34ac))
+* Enable event store OpenTelemetry tracing by default ([#56](https://github.com/TrogonStack/commanded/issues/56)) ([642ab64](https://github.com/TrogonStack/commanded/commit/642ab64131d7ff0540924051e5118185ee06ee84))
 
-## [3.3.0](https://github.com/straw-hat-team/commanded/compare/v3.2.0...v3.3.0) (2026-02-23)
+## [3.3.1](https://github.com/TrogonStack/commanded/compare/v3.3.0...v3.3.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* Use Broadway/Oban pattern for OTel context propagation ([4185ca1](https://github.com/TrogonStack/commanded/commit/4185ca1da3997de7a7a2813e6943b154172a34ac))
+
+## [3.3.0](https://github.com/TrogonStack/commanded/compare/v3.2.0...v3.3.0) (2026-02-23)
 
 
 ### Features
 
-* Add selector option support for InMemory adapter ([625f54b](https://github.com/straw-hat-team/commanded/commit/625f54b3dccab031ceabfe1aeca7e409170e7f4f))
+* Add selector option support for InMemory adapter ([625f54b](https://github.com/TrogonStack/commanded/commit/625f54b3dccab031ceabfe1aeca7e409170e7f4f))
 
 
 ### Bug Fixes
 
-* Check for duplicates before popping from keyword list ([d4dcbdc](https://github.com/straw-hat-team/commanded/commit/d4dcbdc3bb5f2af2f54c2e52a7b1a7b96d5cd41e))
-* Improve router registration error messages ([124f4f4](https://github.com/straw-hat-team/commanded/commit/124f4f4ff8113d721f793ee667e90191b22ab117))
-* Raise ArgumentError instead of RuntimeError for router config errors ([a0add7f](https://github.com/straw-hat-team/commanded/commit/a0add7f49c55a8419e9372662faf41e351ae8bc9))
-* Reject duplicate dispatch options in router ([582f9da](https://github.com/straw-hat-team/commanded/commit/582f9da58a6878c9f1c27c7f89d18c945577bffe))
-* Update release-please workflow to match beam-monorepo config ([27981f6](https://github.com/straw-hat-team/commanded/commit/27981f671d9024059ed63a3ebeebf60994575f9b))
+* Check for duplicates before popping from keyword list ([d4dcbdc](https://github.com/TrogonStack/commanded/commit/d4dcbdc3bb5f2af2f54c2e52a7b1a7b96d5cd41e))
+* Improve router registration error messages ([124f4f4](https://github.com/TrogonStack/commanded/commit/124f4f4ff8113d721f793ee667e90191b22ab117))
+* Raise ArgumentError instead of RuntimeError for router config errors ([a0add7f](https://github.com/TrogonStack/commanded/commit/a0add7f49c55a8419e9372662faf41e351ae8bc9))
+* Reject duplicate dispatch options in router ([582f9da](https://github.com/TrogonStack/commanded/commit/582f9da58a6878c9f1c27c7f89d18c945577bffe))
+* Update release-please workflow to match beam-monorepo config ([27981f6](https://github.com/TrogonStack/commanded/commit/27981f671d9024059ed63a3ebeebf60994575f9b))
 
-## [3.2.0](https://github.com/straw-hat-team/commanded/compare/v3.1.0...v3.2.0) (2026-01-23)
-
-
-### Features
-
-* add OpenTelemetry EventStore instrumentation ([#37](https://github.com/straw-hat-team/commanded/issues/37)) ([6bb4b00](https://github.com/straw-hat-team/commanded/commit/6bb4b0074423daf4a8a823279fa14ab4c604f613))
-* Add OpenTelemetry instrumentation for aggregate populate ([#47](https://github.com/straw-hat-team/commanded/issues/47)) ([f7b43d1](https://github.com/straw-hat-team/commanded/commit/f7b43d1bbc2ab1efe9d9eda2961f2f669721f48b))
-* Add OpenTelemetry instrumentation for event handlers ([#41](https://github.com/straw-hat-team/commanded/issues/41)) ([5946d5a](https://github.com/straw-hat-team/commanded/commit/5946d5ab1957e1a641ed983b8bfeefe08e92e7fb))
-* implement OpenTelemetry instrumentation for aggregates ([#45](https://github.com/straw-hat-team/commanded/issues/45)) ([4e99401](https://github.com/straw-hat-team/commanded/commit/4e9940165dd59f0d08e53e48d01b6f112c3e0660))
-* implement OpenTelemetry instrumentation for application ([#46](https://github.com/straw-hat-team/commanded/issues/46)) ([a4bc0fd](https://github.com/straw-hat-team/commanded/commit/a4bc0fd8722c7d16907f57ff80f527f0f1153178))
-
-## [3.1.0](https://github.com/straw-hat-team/commanded/compare/v3.0.0...v3.1.0) (2026-01-13)
+## [3.2.0](https://github.com/TrogonStack/commanded/compare/v3.1.0...v3.2.0) (2026-01-23)
 
 
 ### Features
 
-* add aggregate identity handling to use `Commanded.Aggregate.Identity` protocol ([#43](https://github.com/straw-hat-team/commanded/issues/43)) ([a0eb2cb](https://github.com/straw-hat-team/commanded/commit/a0eb2cb982958bad29d6905af3ad4e477efa05fb))
-* add W3C Trace Context propagation middleware for OpenTelemetry ([#38](https://github.com/straw-hat-team/commanded/issues/38)) ([b6c3e0b](https://github.com/straw-hat-team/commanded/commit/b6c3e0b830a0572748134fa81de9ce5447364dd1))
+* add OpenTelemetry EventStore instrumentation ([#37](https://github.com/TrogonStack/commanded/issues/37)) ([6bb4b00](https://github.com/TrogonStack/commanded/commit/6bb4b0074423daf4a8a823279fa14ab4c604f613))
+* Add OpenTelemetry instrumentation for aggregate populate ([#47](https://github.com/TrogonStack/commanded/issues/47)) ([f7b43d1](https://github.com/TrogonStack/commanded/commit/f7b43d1bbc2ab1efe9d9eda2961f2f669721f48b))
+* Add OpenTelemetry instrumentation for event handlers ([#41](https://github.com/TrogonStack/commanded/issues/41)) ([5946d5a](https://github.com/TrogonStack/commanded/commit/5946d5ab1957e1a641ed983b8bfeefe08e92e7fb))
+* implement OpenTelemetry instrumentation for aggregates ([#45](https://github.com/TrogonStack/commanded/issues/45)) ([4e99401](https://github.com/TrogonStack/commanded/commit/4e9940165dd59f0d08e53e48d01b6f112c3e0660))
+* implement OpenTelemetry instrumentation for application ([#46](https://github.com/TrogonStack/commanded/issues/46)) ([a4bc0fd](https://github.com/TrogonStack/commanded/commit/a4bc0fd8722c7d16907f57ff80f527f0f1153178))
 
-## [3.0.0](https://github.com/straw-hat-team/commanded/compare/v2.1.0...v3.0.0) (2025-11-21)
+## [3.1.0](https://github.com/TrogonStack/commanded/compare/v3.0.0...v3.1.0) (2026-01-13)
+
+
+### Features
+
+* add aggregate identity handling to use `Commanded.Aggregate.Identity` protocol ([#43](https://github.com/TrogonStack/commanded/issues/43)) ([a0eb2cb](https://github.com/TrogonStack/commanded/commit/a0eb2cb982958bad29d6905af3ad4e477efa05fb))
+* add W3C Trace Context propagation middleware for OpenTelemetry ([#38](https://github.com/TrogonStack/commanded/issues/38)) ([b6c3e0b](https://github.com/TrogonStack/commanded/commit/b6c3e0b830a0572748134fa81de9ce5447364dd1))
+
+## [3.0.0](https://github.com/TrogonStack/commanded/compare/v2.1.0...v3.0.0) (2025-11-21)
 
 
 ### ⚠ BREAKING CHANGES
 
-* remove deprecated init/0 callback and atom metadata key ([#35](https://github.com/straw-hat-team/commanded/issues/35))
-* remove deprecated project macros in Ecto projections ([#31](https://github.com/straw-hat-team/commanded/issues/31))
-* remove upcast ([#26](https://github.com/straw-hat-team/commanded/issues/26))
-* remove process manager ([#24](https://github.com/straw-hat-team/commanded/issues/24))
+* remove deprecated init/0 callback and atom metadata key ([#35](https://github.com/TrogonStack/commanded/issues/35))
+* remove deprecated project macros in Ecto projections ([#31](https://github.com/TrogonStack/commanded/issues/31))
+* remove upcast ([#26](https://github.com/TrogonStack/commanded/issues/26))
+* remove process manager ([#24](https://github.com/TrogonStack/commanded/issues/24))
 
 ### Features
 
-* add batch support to Ecto projections ([#30](https://github.com/straw-hat-team/commanded/issues/30)) ([0fb29d6](https://github.com/straw-hat-team/commanded/commit/0fb29d6e4213a87158e45e028f8b45e093d60ef0))
-* add Commanded.Projections.Ecto ([#27](https://github.com/straw-hat-team/commanded/issues/27)) ([d7bdcce](https://github.com/straw-hat-team/commanded/commit/d7bdcce33f32e61a1ec4ddfcb6decb24a81a995e))
-* add support for UUIDv7 generation and update command options to use UUIDv7 ([#22](https://github.com/straw-hat-team/commanded/issues/22)) ([bb29716](https://github.com/straw-hat-team/commanded/commit/bb297164b97e452b44d138ae3b412f26bd1d55c2))
-* implement timezone-aware timestamps for projections ([#32](https://github.com/straw-hat-team/commanded/issues/32)) ([af1bb2c](https://github.com/straw-hat-team/commanded/commit/af1bb2cb6651a0a1ea9b79142cb8a8413137981a))
+* add batch support to Ecto projections ([#30](https://github.com/TrogonStack/commanded/issues/30)) ([0fb29d6](https://github.com/TrogonStack/commanded/commit/0fb29d6e4213a87158e45e028f8b45e093d60ef0))
+* add Commanded.Projections.Ecto ([#27](https://github.com/TrogonStack/commanded/issues/27)) ([d7bdcce](https://github.com/TrogonStack/commanded/commit/d7bdcce33f32e61a1ec4ddfcb6decb24a81a995e))
+* add support for UUIDv7 generation and update command options to use UUIDv7 ([#22](https://github.com/TrogonStack/commanded/issues/22)) ([bb29716](https://github.com/TrogonStack/commanded/commit/bb297164b97e452b44d138ae3b412f26bd1d55c2))
+* implement timezone-aware timestamps for projections ([#32](https://github.com/TrogonStack/commanded/issues/32)) ([af1bb2c](https://github.com/TrogonStack/commanded/commit/af1bb2cb6651a0a1ea9b79142cb8a8413137981a))
 
 
 ### Bug Fixes
 
-* add concurrency validation for Ecto projections ([#33](https://github.com/straw-hat-team/commanded/issues/33)) ([50ec412](https://github.com/straw-hat-team/commanded/commit/50ec4128f9d684bd33820b527e2320f7f788caff))
-* remove process manager ([#24](https://github.com/straw-hat-team/commanded/issues/24)) ([fbe7479](https://github.com/straw-hat-team/commanded/commit/fbe74793f4527f1f73f5beb0e6b08fc27b9049c1))
-* remove upcast ([#26](https://github.com/straw-hat-team/commanded/issues/26)) ([9d03039](https://github.com/straw-hat-team/commanded/commit/9d03039812ae934f2177f17e435ddbc59bb804ee))
+* add concurrency validation for Ecto projections ([#33](https://github.com/TrogonStack/commanded/issues/33)) ([50ec412](https://github.com/TrogonStack/commanded/commit/50ec4128f9d684bd33820b527e2320f7f788caff))
+* remove process manager ([#24](https://github.com/TrogonStack/commanded/issues/24)) ([fbe7479](https://github.com/TrogonStack/commanded/commit/fbe74793f4527f1f73f5beb0e6b08fc27b9049c1))
+* remove upcast ([#26](https://github.com/TrogonStack/commanded/issues/26)) ([9d03039](https://github.com/TrogonStack/commanded/commit/9d03039812ae934f2177f17e435ddbc59bb804ee))
 
 
 ### Miscellaneous Chores
 
-* remove deprecated init/0 callback and atom metadata key ([#35](https://github.com/straw-hat-team/commanded/issues/35)) ([4762803](https://github.com/straw-hat-team/commanded/commit/47628032d9cba32bd21a07a5d6e424dea686e836))
-* remove deprecated project macros in Ecto projections ([#31](https://github.com/straw-hat-team/commanded/issues/31)) ([2c552e8](https://github.com/straw-hat-team/commanded/commit/2c552e80a6daa48b901f243263758c77c1410514))
+* remove deprecated init/0 callback and atom metadata key ([#35](https://github.com/TrogonStack/commanded/issues/35)) ([4762803](https://github.com/TrogonStack/commanded/commit/47628032d9cba32bd21a07a5d6e424dea686e836))
+* remove deprecated project macros in Ecto projections ([#31](https://github.com/TrogonStack/commanded/issues/31)) ([2c552e8](https://github.com/TrogonStack/commanded/commit/2c552e80a6daa48b901f243263758c77c1410514))
 
-## [2.1.0](https://github.com/straw-hat-team/commanded/compare/v2.0.0...v2.1.0) (2025-08-30)
+## [2.1.0](https://github.com/TrogonStack/commanded/compare/v2.0.0...v2.1.0) (2025-08-30)
 
 
 ### Features
 
-* Add aggregate behaviour ([31337cb](https://github.com/straw-hat-team/commanded/commit/31337cbb7f93b7c7ac77b8a33dae0285ffe492d5))
-* add batch support ([#18](https://github.com/straw-hat-team/commanded/issues/18)) ([b593f04](https://github.com/straw-hat-team/commanded/commit/b593f040bca4ddedc29f0787d82f484aa699d196))
-* add configurable UUID provider using Uniq.UUID ([deb4f8f](https://github.com/straw-hat-team/commanded/commit/deb4f8ffe0d33a24cbe8e55d2584bd8af2047924))
+* Add aggregate behaviour ([31337cb](https://github.com/TrogonStack/commanded/commit/31337cbb7f93b7c7ac77b8a33dae0285ffe492d5))
+* add batch support ([#18](https://github.com/TrogonStack/commanded/issues/18)) ([b593f04](https://github.com/TrogonStack/commanded/commit/b593f040bca4ddedc29f0787d82f484aa699d196))
+* add configurable UUID provider using Uniq.UUID ([deb4f8f](https://github.com/TrogonStack/commanded/commit/deb4f8ffe0d33a24cbe8e55d2584bd8af2047924))
 
 
 ### Bug Fixes
 
-* make take snapshot sync call ([#20](https://github.com/straw-hat-team/commanded/issues/20)) ([57d0b6a](https://github.com/straw-hat-team/commanded/commit/57d0b6a118dfd218b7656d35daa6aaee5b322eae))
+* make take snapshot sync call ([#20](https://github.com/TrogonStack/commanded/issues/20)) ([57d0b6a](https://github.com/TrogonStack/commanded/commit/57d0b6a118dfd218b7656d35daa6aaee5b322eae))
 
-## [2.0.0](https://github.com/straw-hat-team/commanded/compare/v1.6.0...v2.0.0) (2025-05-30)
+## [2.0.0](https://github.com/TrogonStack/commanded/compare/v1.6.0...v2.0.0) (2025-05-30)
 
 
 ### ⚠ BREAKING CHANGES
 
-* introduce EnrichedMetadata struct for enhanced event metadata handling ([#11](https://github.com/straw-hat-team/commanded/issues/11))
+* introduce EnrichedMetadata struct for enhanced event metadata handling ([#11](https://github.com/TrogonStack/commanded/issues/11))
 
 ### Features
 
-* add serializer behaviour ([#14](https://github.com/straw-hat-team/commanded/issues/14)) ([fa81870](https://github.com/straw-hat-team/commanded/commit/fa818701e437f36e2f3afe6732b39f117b034d19))
-* introduce EnrichedMetadata struct for enhanced event metadata handling ([#11](https://github.com/straw-hat-team/commanded/issues/11)) ([7772579](https://github.com/straw-hat-team/commanded/commit/77725791c7f10667baec4e76bd6f16983f52b118))
+* add serializer behaviour ([#14](https://github.com/TrogonStack/commanded/issues/14)) ([fa81870](https://github.com/TrogonStack/commanded/commit/fa818701e437f36e2f3afe6732b39f117b034d19))
+* introduce EnrichedMetadata struct for enhanced event metadata handling ([#11](https://github.com/TrogonStack/commanded/issues/11)) ([7772579](https://github.com/TrogonStack/commanded/commit/77725791c7f10667baec4e76bd6f16983f52b118))
 
-## [1.6.0](https://github.com/straw-hat-team/commanded/compare/v1.5.0...v1.6.0) (2025-05-19)
+## [1.6.0](https://github.com/TrogonStack/commanded/compare/v1.5.0...v1.6.0) (2025-05-19)
 
 
 ### Features
 
-* add telemetry for wrong expected version in aggregates ([#8](https://github.com/straw-hat-team/commanded/issues/8)) ([fe41c8a](https://github.com/straw-hat-team/commanded/commit/fe41c8ac971920fb9cfafb4dbd9fdf8d7b1286b0))
+* add telemetry for wrong expected version in aggregates ([#8](https://github.com/TrogonStack/commanded/issues/8)) ([fe41c8a](https://github.com/TrogonStack/commanded/commit/fe41c8ac971920fb9cfafb4dbd9fdf8d7b1286b0))
 
 ## v1.5.0
 

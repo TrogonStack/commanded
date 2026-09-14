@@ -1,13 +1,13 @@
 # Fork Differences from Upstream
 
-This document tracks all changes made in the `straw-hat-team/commanded` fork compared to the upstream `commanded/commanded` repository.
+This document tracks all changes made in the `TrogonStack/commanded` fork compared to the upstream `commanded/commanded` repository.
 
 ## Overview
 
 This fork maintains an independent release cycle to introduce new features and improvements with thorough testing before considering contributions back to the original project.
 
 **Upstream Repository:** [github.com/commanded/commanded](https://github.com/commanded/commanded)
-**Fork Repository:** [github.com/straw-hat-team/commanded](https://github.com/straw-hat-team/commanded)
+**Fork Repository:** [github.com/TrogonStack/commanded](https://github.com/TrogonStack/commanded)
 
 ---
 
@@ -21,7 +21,7 @@ This fork maintains an independent release cycle to introduce new features and i
 - Only function-based syntax is now supported: `project(event, fn multi -> ... end)`
 
 ### **Removed ProcessManager Support**
-[PR #24](https://github.com/straw-hat-team/commanded/pull/24)
+[PR #24](https://github.com/TrogonStack/commanded/pull/24)
 
 **Changes:**
 - Removed all ProcessManager modules and tests
@@ -32,7 +32,7 @@ This fork maintains an independent release cycle to introduce new features and i
 **Reason:** The saga pattern can be achieved using event handlers with read models and aggregates, eliminating the need for the additional ProcessManager abstraction.
 
 ### **Removed Upcasting Support**
-[PR #26](https://github.com/straw-hat-team/commanded/pull/26)
+[PR #26](https://github.com/TrogonStack/commanded/pull/26)
 
 **Changes:**
 - Removed `Commanded.Event.Upcast` and `Commanded.Event.Upcaster` modules
@@ -42,7 +42,7 @@ This fork maintains an independent release cycle to introduce new features and i
 **Reason:** Event schema transformations can be handled explicitly in event handlers and aggregates using pattern matching, eliminating the need for a global upcasting component.
 
 ### **EnrichedMetadata Struct**
-[PR #11](https://github.com/straw-hat-team/commanded/pull/11)
+[PR #11](https://github.com/TrogonStack/commanded/pull/11)
 
 **Changes:**
 - Replaced plain map metadata with `Commanded.EventStore.EnrichedMetadata` struct
@@ -53,7 +53,7 @@ This fork maintains an independent release cycle to introduce new features and i
 ## Features Added ✨
 
 ### **Dispatcher Failure Boundary Normalization**
-[PR #98](https://github.com/straw-hat-team/commanded/pull/98)
+[PR #98](https://github.com/TrogonStack/commanded/pull/98)
 
 **Changes:**
 - Moved aggregate execution exit normalization into `Commanded.Aggregates.Aggregate.execute/5`
@@ -68,7 +68,7 @@ This fork maintains an independent release cycle to introduce new features and i
 - Gives middleware and logs better diagnostic context for abnormal aggregate exits without widening the public dispatch API
 
 ### **UUIDv7 Support**
-[PR #22](https://github.com/straw-hat-team/commanded/pull/22)
+[PR #22](https://github.com/TrogonStack/commanded/pull/22)
 
 **Changes:**
 - Added UUIDv7 generation support for command and event IDs
@@ -82,14 +82,14 @@ This fork maintains an independent release cycle to introduce new features and i
 - Simplified UUID module by delegating to Uniq
 
 ### **Aggregate Telemetry for Version Conflicts**
-[PR #8](https://github.com/straw-hat-team/commanded/pull/8)
+[PR #8](https://github.com/TrogonStack/commanded/pull/8)
 
 **Changes:**
 - Added telemetry events for wrong expected version errors in aggregates
 - Enhanced monitoring capabilities for version conflicts
 
 ### **Custom Event ID Support**
-[PR #2](https://github.com/straw-hat-team/commanded/pull/2)
+[PR #2](https://github.com/TrogonStack/commanded/pull/2)
 
 **Changes:**
 - Added `Commanded.Event.EventId` protocol
@@ -97,7 +97,7 @@ This fork maintains an independent release cycle to introduce new features and i
 - Support for deterministic event IDs
 
 ### **EventStore Adapter**
-[PR #1](https://github.com/straw-hat-team/commanded/pull/1)
+[PR #1](https://github.com/TrogonStack/commanded/pull/1)
 
 **Changes:**
 - Bundled `Commanded.EventStore.Adapters.EventStore` directly into Commanded
@@ -163,7 +163,7 @@ end
 ```
 
 ### **W3C Trace Context Propagation Middleware**
-[PR #38](https://github.com/straw-hat-team/commanded/pull/38)
+[PR #38](https://github.com/TrogonStack/commanded/pull/38)
 
 **Changes:**
 - Added `Commanded.Middleware.TraceContextPropagator` middleware for propagating OpenTelemetry trace context
@@ -188,7 +188,7 @@ end
 - Non-invasive - only adds metadata when a span is active
 
 ### **W3C Baggage Propagation Middleware**
-[PR #108](https://github.com/straw-hat-team/commanded/pull/108)
+[PR #108](https://github.com/TrogonStack/commanded/pull/108)
 
 **Changes:**
 - Added `Commanded.Middleware.BaggagePropagator` middleware for propagating OpenTelemetry baggage
@@ -213,7 +213,7 @@ end
 - Router-level declaration makes baggage propagation visible at the call site, since baggage entries persist in event metadata for the lifetime of the stream
 
 ### **Aggregate Identity Protocol**
-[PR #43](https://github.com/straw-hat-team/commanded/pull/43)
+[PR #43](https://github.com/TrogonStack/commanded/pull/43)
 
 **Changes:**
 - Added `Commanded.Aggregate.Identity` protocol for converting aggregate identities to stream ID strings
@@ -258,7 +258,7 @@ end
 With a dedicated protocol, the API response format and the event store stream ID format are properly separated and can evolve independently.
 
 ### **OpenTelemetry Integration**
-PRs: [#37](https://github.com/straw-hat-team/commanded/pull/37), [#41](https://github.com/straw-hat-team/commanded/pull/41), [#45](https://github.com/straw-hat-team/commanded/pull/45), [#46](https://github.com/straw-hat-team/commanded/pull/46), [#47](https://github.com/straw-hat-team/commanded/pull/47), [#58](https://github.com/straw-hat-team/commanded/pull/58), [#60](https://github.com/straw-hat-team/commanded/pull/60), [#61](https://github.com/straw-hat-team/commanded/pull/61), [#90](https://github.com/straw-hat-team/commanded/pull/90)
+PRs: [#37](https://github.com/TrogonStack/commanded/pull/37), [#41](https://github.com/TrogonStack/commanded/pull/41), [#45](https://github.com/TrogonStack/commanded/pull/45), [#46](https://github.com/TrogonStack/commanded/pull/46), [#47](https://github.com/TrogonStack/commanded/pull/47), [#58](https://github.com/TrogonStack/commanded/pull/58), [#60](https://github.com/TrogonStack/commanded/pull/60), [#61](https://github.com/TrogonStack/commanded/pull/61), [#90](https://github.com/TrogonStack/commanded/pull/90)
 
 **Changes:**
 - Added `Commanded.OpenTelemetry` module for distributed tracing
@@ -286,7 +286,7 @@ end
 
 ### **Aggregate Load Telemetry**
 
-[PR #58](https://github.com/straw-hat-team/commanded/pull/58)
+[PR #58](https://github.com/TrogonStack/commanded/pull/58)
 
 **Changes:**
 - Added `[:commanded, :aggregate, :load]` telemetry for full event store load (stream_forward + consumption)
@@ -299,14 +299,14 @@ end
 - Separate load (event store I/O) from populate (state rebuild) in traces
 
 ### **OpenTelemetry Aggregate Snapshots**
-[PR #60](https://github.com/straw-hat-team/commanded/pull/60)
+[PR #60](https://github.com/TrogonStack/commanded/pull/60)
 
 **Changes:**
 - Added OTel spans for aggregate snapshot operations (`commanded.aggregate.snapshot`)
 - Spans fire when taking snapshots during aggregate execution
 
 ### **OpenTelemetry wrong_expected_version Span Event**
-[PR #61](https://github.com/straw-hat-team/commanded/pull/61)
+[PR #61](https://github.com/TrogonStack/commanded/pull/61)
 
 **Changes:**
 - Track `wrong_expected_version_count` in aggregate struct and `:stop` telemetry metadata
@@ -314,13 +314,13 @@ end
 - Enables alerting on optimistic concurrency conflicts via telemetry
 
 ### **Aggregate Load Trace Context Propagation**
-[PR #90](https://github.com/straw-hat-team/commanded/pull/90)
+[PR #90](https://github.com/TrogonStack/commanded/pull/90)
 
 **Changes:**
 - Propagate the dispatch caller's W3C trace context (`traceparent`/`tracestate`) through aggregate startup so that `load` and `populate` spans become children of the dispatch trace instead of orphaned root spans
 
 ### **Event Handler Processing Latency Telemetry**
-[PR #66](https://github.com/straw-hat-team/commanded/pull/66)
+[PR #66](https://github.com/TrogonStack/commanded/pull/66)
 
 **Changes:**
 - Added `processing_latency_ms` measurement to `[:commanded, :event, :handle, :stop]` and `[:commanded, :event, :batch, :stop]` telemetry events

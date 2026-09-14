@@ -2,7 +2,7 @@ defmodule Commanded.Mixfile do
   use Mix.Project
 
   @version "3.7.1"
-  @source_url "https://github.com/straw-hat-team/commanded"
+  @source_url "https://github.com/TrogonStack/commanded"
 
   def project do
     [
@@ -229,7 +229,7 @@ defmodule Commanded.Mixfile do
       maintainers: ["Yordis Prieto"],
       licenses: ["MIT"],
       links: %{
-        "Changelog" => "https://github.com/straw-hat-team/commanded/blob/main/CHANGELOG.md",
+        "Changelog" => "https://github.com/TrogonStack/commanded/blob/main/CHANGELOG.md",
         "GitHub" => @source_url
       }
     ]
