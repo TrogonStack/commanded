@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.8.0](https://github.com/TrogonStack/commanded/compare/v3.7.1...v3.8.0) (2026-09-14)
+
+
+### Features
+
+* **middleware:** Add BaggagePropagator for W3C Baggage ([#108](https://github.com/TrogonStack/commanded/issues/108)) ([d0e9177](https://github.com/TrogonStack/commanded/commit/d0e9177380b96ff17de8d830f74bb341fca8e356))
+* **router:** Support `causation_id: nil` to mark events as chain roots ([#106](https://github.com/TrogonStack/commanded/issues/106)) ([4da2396](https://github.com/TrogonStack/commanded/commit/4da2396b4864b136ff3d81e809df7d425e1461a7))
+
+
+### Bug Fixes
+
+* **dispatcher:** Honour `:causation_id` dispatch option on persisted events ([dba8594](https://github.com/TrogonStack/commanded/commit/dba859463e269848a78af308127a93f0276aede9))
+
 ## [3.7.1](https://github.com/TrogonStack/commanded/compare/v3.7.0...v3.7.1) (2026-05-14)
 
 
