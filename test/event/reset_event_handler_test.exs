@@ -152,6 +152,41 @@ defmodule Commanded.Event.ResetEventHandlerTest do
       refute log =~ "received unexpected message"
     end
 
+    test "should keep a `subscribed` message sent by anything other than the reset subscription" do
+      stream_uuid = UUID.uuid4()
+      initial_events = [%BankAccountOpened{account_number: "ACC123", initial_balance: 1_000}]
+
+      :ok = EventStore.append_to_stream(BankApp, stream_uuid, 0, to_event_data(initial_events))
+
+      handler = start_supervised!(BankAccountHandler)
+
+      Wait.until(fn ->
+        assert BankAccountHandler.current_accounts() == ["ACC123"]
+      end)
+
+      :ok = BankAccountHandler.change_prefix("PREF_")
+
+      :ok = :sys.suspend(handler)
+
+      send(handler, :reset)
+      send(handler, {:subscribed, self()})
+
+      Wait.until(fn ->
+        assert {:messages, [:reset, {:subscribed, _}]} = Process.info(handler, :messages)
+      end)
+
+      log =
+        capture_log(fn ->
+          :ok = :sys.resume(handler)
+
+          Wait.until(fn ->
+            assert BankAccountHandler.current_accounts() == ["PREF_ACC123"]
+          end)
+        end)
+
+      assert log =~ "received unexpected message: {:subscribed, #{inspect(self())}}"
+    end
+
     test "should be reset while its subscription attempt is still being retried" do
       {:ok, competing_subscription} =
         EventStore.subscribe_to(BankApp, :all, "PendingSubscriptionHandler", self(), :origin, [])

@@ -1059,26 +1059,48 @@ defmodule Commanded.Event.Handler do
   end
 
   defp reset_subscription(%Handler{} = state) do
-    %Handler{subscription: subscription} = state
+    %Handler{subscription: %Subscription{subscription_pid: reset_subscription_pid} = subscription} =
+      state
 
     subscription = Subscription.reset(subscription)
 
-    # The deleted subscription's process is stopped before `Subscription.reset/1` returns and the
-    # new subscription does not exist yet, so any queued message came from the deleted
-    # subscription and must not be attributed to its replacement.
-    drain_stale_subscription_messages()
-
-    state = state |> cancel_batch_timer() |> cancel_subscribe_timer()
+    state =
+      state
+      |> discard_messages_from(reset_subscription_pid)
+      |> cancel_batch_timer()
+      |> cancel_subscribe_timer()
 
     %Handler{state | last_seen_event: nil, subscription: subscription, batch_buffer: []}
   end
 
-  defp drain_stale_subscription_messages do
+  # `Subscription.reset/1` stops the subscription's process before returning, and the replacement
+  # is not started until `subscribe_to_events/1` runs, so nothing can be delivered while this
+  # drains. `{:subscribed, pid}` identifies its sender and is matched against the subscription
+  # that was reset; `{:events, _}` does not carry one, so it can only be matched by shape.
+  defp discard_messages_from(%Handler{} = state, reset_subscription_pid) do
+    case discard_messages_from(reset_subscription_pid, 0) do
+      0 ->
+        state
+
+      discarded ->
+        Logger.debug(
+          describe(state) <>
+            " discarded #{discarded} message(s) queued by the subscription it reset"
+        )
+
+        state
+    end
+  end
+
+  defp discard_messages_from(reset_subscription_pid, discarded) do
     receive do
-      {:events, _events} -> drain_stale_subscription_messages()
-      {:subscribed, _subscription} -> drain_stale_subscription_messages()
+      {:events, _events} ->
+        discard_messages_from(reset_subscription_pid, discarded + 1)
+
+      {:subscribed, ^reset_subscription_pid} ->
+        discard_messages_from(reset_subscription_pid, discarded + 1)
     after
-      0 -> :ok
+      0 -> discarded
     end
   end
 
