@@ -337,6 +337,50 @@ defmodule Commanded.Event.ResetEventHandlerTest do
       assert Process.read_timer(subscribe_timer) == false
     end
 
+    test "should discard a subscription retry that expired before the reset" do
+      {:ok, competing_subscription} =
+        EventStore.subscribe_to(BankApp, :all, "PendingSubscriptionHandler", self(), :origin, [])
+
+      handler = start_supervised!(PendingSubscriptionHandler)
+
+      Wait.until(fn ->
+        assert %Handler{
+                 subscribe_timer: subscribe_timer,
+                 subscription: %Subscription{subscription_pid: nil}
+               } = :sys.get_state(handler)
+
+        assert is_reference(subscribe_timer)
+      end)
+
+      :ok = :sys.suspend(handler)
+
+      send(handler, :reset)
+
+      # The retry has to expire while the handler is suspended, so its message is already queued
+      # behind the reset by the time cancelling the timer can no longer recall it.
+      Wait.until(3_000, fn ->
+        assert {:messages, [:reset, :subscribe_to_events]} = Process.info(handler, :messages)
+      end)
+
+      :ok = EventStore.unsubscribe(BankApp, competing_subscription)
+
+      log =
+        capture_log(fn ->
+          :ok = :sys.resume(handler)
+
+          Wait.until(fn ->
+            assert %Handler{
+                     subscribe_timer: nil,
+                     subscription: %Subscription{subscription_pid: subscription_pid}
+                   } = :sys.get_state(handler)
+
+            assert is_pid(subscription_pid)
+          end)
+        end)
+
+      refute log =~ "failed to subscribe to event store"
+    end
+
     test "should be reset when starting from `:current`" do
       stream_uuid = UUID.uuid4()
 
