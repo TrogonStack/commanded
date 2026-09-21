@@ -100,6 +100,28 @@ defmodule Commanded.Event.EventHandlerConcurrencyTest do
       assert length(unique_pids) == 5
     end
 
+    test "should reset one handler without disturbing the others", %{supervisor: supervisor} do
+      for _ <- 1..5, do: assert_receive({:init, _pid})
+
+      [{_, handler, _, _} | _] = Supervisor.which_children(supervisor)
+
+      event_store = Process.whereis(Module.concat([DefaultApp, "EventStore"]))
+      event_store_ref = Process.monitor(event_store)
+      handler_ref = Process.monitor(handler)
+
+      send(handler, :reset)
+
+      refute_receive {:DOWN, ^event_store_ref, :process, ^event_store, _reason}
+      refute_receive {:DOWN, ^handler_ref, :process, ^handler, _reason}
+
+      assert %{active: 5, specs: 5, supervisors: 0, workers: 5} =
+               Supervisor.count_children(supervisor)
+
+      append_events_to_stream("stream1", count: 1)
+
+      assert_receive {:event, "stream1", _pid}
+    end
+
     test "should error when handler started with `:strong` consistency" do
       assert_raise ArgumentError,
                    "cannot use `:strong` consistency with concurrency",
