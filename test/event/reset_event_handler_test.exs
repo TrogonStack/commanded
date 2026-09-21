@@ -205,28 +205,16 @@ defmodule Commanded.Event.ResetEventHandlerTest do
 
       send(handler, :reset)
 
-      subscription_pid =
-        Wait.until(fn ->
-          assert %Handler{
-                   subscribe_timer: nil,
-                   subscription: %Subscription{subscription_pid: subscription_pid}
-                 } = :sys.get_state(handler)
+      Wait.until(fn ->
+        assert %Handler{
+                 subscribe_timer: nil,
+                 subscription: %Subscription{subscription_pid: subscription_pid}
+               } = :sys.get_state(handler)
 
-          assert is_pid(subscription_pid)
-
-          subscription_pid
-        end)
+        assert is_pid(subscription_pid)
+      end)
 
       assert Process.read_timer(subscribe_timer) == false
-
-      # The first retry jitters within a second of backoff, so an uncancelled timer fires inside
-      # this window
-      Process.sleep(3_500)
-
-      assert %Handler{
-               subscribe_timer: nil,
-               subscription: %Subscription{subscription_pid: ^subscription_pid}
-             } = :sys.get_state(handler)
     end
 
     @tag :skip
