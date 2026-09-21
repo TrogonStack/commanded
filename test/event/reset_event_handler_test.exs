@@ -7,6 +7,7 @@ defmodule Commanded.Event.ResetEventHandlerTest do
   alias Commanded.Event.Handler
   alias Commanded.Event.Mapper
   alias Commanded.EventStore
+  alias Commanded.EventStore.RecordedEvent
   alias Commanded.EventStore.Subscription
   alias Commanded.ExampleDomain.BankAccount.BankAccountHandler
   alias Commanded.ExampleDomain.BankAccount.Events.BankAccountOpened
@@ -335,6 +336,39 @@ defmodule Commanded.Event.ResetEventHandlerTest do
       end)
 
       assert Process.read_timer(subscribe_timer) == false
+    end
+
+    test "should be reset while another subscriber still holds its subscription name" do
+      {:ok, competing_subscription} =
+        EventStore.subscribe_to(BankApp, :all, "PendingSubscriptionHandler", self(), :origin, [])
+
+      assert_receive {:subscribed, ^competing_subscription}
+
+      handler = start_supervised!(PendingSubscriptionHandler)
+
+      Wait.until(fn ->
+        assert %Handler{
+                 subscribe_timer: subscribe_timer,
+                 subscription: %Subscription{subscription_pid: nil}
+               } = :sys.get_state(handler)
+
+        assert is_reference(subscribe_timer)
+      end)
+
+      event_store_pid = Process.whereis(Module.concat([BankApp, "EventStore"]))
+      handler_ref = Process.monitor(handler)
+      event_store_ref = Process.monitor(event_store_pid)
+
+      send(handler, :reset)
+
+      refute_receive {:DOWN, ^handler_ref, :process, ^handler, _reason}
+      refute_receive {:DOWN, ^event_store_ref, :process, ^event_store_pid, _reason}
+
+      stream_uuid = UUID.uuid4()
+      events = [%BankAccountOpened{account_number: "ACC123", initial_balance: 1_000}]
+      :ok = EventStore.append_to_stream(BankApp, stream_uuid, 0, to_event_data(events))
+
+      assert_receive {:events, [%RecordedEvent{}]}
     end
 
     test "should discard a subscription retry that expired before the reset" do

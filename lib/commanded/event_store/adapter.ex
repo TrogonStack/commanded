@@ -100,7 +100,10 @@ defmodule Commanded.EventStore.Adapter do
               stream_uuid | :all,
               subscription_name
             ) ::
-              :ok | {:error, :subscription_not_found} | {:error, error}
+              :ok
+              | {:error, :subscription_not_found}
+              | {:error, :subscription_has_subscribers}
+              | {:error, error}
 
   @doc """
   Read a snapshot, if available, for a given source.

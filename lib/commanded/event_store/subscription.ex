@@ -106,9 +106,13 @@ defmodule Commanded.EventStore.Subscription do
       :ok = EventStore.unsubscribe(application, subscription_pid)
     end
 
+    # Another subscriber can still hold the subscription name, either a sibling of a concurrent
+    # handler or an unrelated one this handler has been losing a race against. Its checkpoint is
+    # not this handler's to discard, and the reset has to go ahead regardless.
     case EventStore.delete_subscription(application, subscribe_to, subscription_name) do
       :ok -> :ok
       {:error, :subscription_not_found} -> :ok
+      {:error, :subscription_has_subscribers} -> :ok
     end
 
     %Subscription{
