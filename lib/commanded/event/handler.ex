@@ -1309,6 +1309,13 @@ defmodule Commanded.Event.Handler do
     end
   end
 
+  # `Process.cancel_timer/1` answers `false` once the timer has expired, and by then it has already
+  # delivered `:subscribe_to_events` into this handler's own mailbox, where cancelling can no longer
+  # reach it. Left queued, it outlives the reset and drives a second `subscribe_to_events/1` against
+  # the subscription the reset just established, which fails and re-arms the retry indefinitely.
+  #
+  # The name describes the mechanism rather than the reason; `discard_expired_subscribe_retry/0`
+  # would read better, and is only kept for symmetry with `drain_flush_batch_timeout_message/0`.
   defp drain_subscribe_to_events_message do
     receive do
       :subscribe_to_events -> :ok
