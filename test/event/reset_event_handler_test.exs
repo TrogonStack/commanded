@@ -38,6 +38,36 @@ defmodule Commanded.Event.ResetEventHandlerTest do
       end)
     end
 
+    test "should discard events delivered by the subscription before the reset" do
+      stream_uuid = UUID.uuid4()
+      initial_events = [%BankAccountOpened{account_number: "ACC123", initial_balance: 1_000}]
+
+      :ok = EventStore.append_to_stream(BankApp, stream_uuid, 0, to_event_data(initial_events))
+
+      handler = start_supervised!(BankAccountHandler)
+
+      Wait.until(fn ->
+        assert BankAccountHandler.current_accounts() == ["ACC123"]
+      end)
+
+      :ok = :sys.suspend(handler)
+
+      send(handler, :reset)
+
+      stale_events = [%BankAccountOpened{account_number: "ACC456", initial_balance: 1_000}]
+      :ok = EventStore.append_to_stream(BankApp, stream_uuid, 1, to_event_data(stale_events))
+
+      Wait.until(fn ->
+        assert {:messages, [:reset, {:events, [_event]}]} = Process.info(handler, :messages)
+      end)
+
+      :ok = :sys.resume(handler)
+
+      Wait.until(fn ->
+        assert BankAccountHandler.current_accounts() == ["ACC123", "ACC456"]
+      end)
+    end
+
     @tag :skip
     test "should be reset when starting from `:current`" do
       stream_uuid = UUID.uuid4()

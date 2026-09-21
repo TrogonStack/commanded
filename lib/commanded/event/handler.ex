@@ -1063,7 +1063,27 @@ defmodule Commanded.Event.Handler do
 
     subscription = Subscription.reset(subscription)
 
-    %Handler{state | last_seen_event: nil, subscription: subscription, subscribe_timer: nil}
+    # The deleted subscription's process is stopped before `Subscription.reset/1` returns and the
+    # new subscription does not exist yet, so any queued events came from the subscription reset.
+    drain_stale_events()
+
+    state = cancel_batch_timer(state)
+
+    %Handler{
+      state
+      | last_seen_event: nil,
+        subscription: subscription,
+        subscribe_timer: nil,
+        batch_buffer: []
+    }
+  end
+
+  defp drain_stale_events do
+    receive do
+      {:events, _events} -> drain_stale_events()
+    after
+      0 -> :ok
+    end
   end
 
   defp subscribe_to_events(%Handler{} = state) do
