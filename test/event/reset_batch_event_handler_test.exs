@@ -3,8 +3,10 @@ defmodule Commanded.Event.BatchResetEventHandlerTest do
 
   import Commanded.Assertions.EventAssertions
 
+  alias Commanded.Event.Handler
   alias Commanded.Event.Mapper
   alias Commanded.EventStore
+  alias Commanded.EventStore.Subscription
   alias Commanded.ExampleDomain.BankAccount.BankAccountBatchHandler
   alias Commanded.ExampleDomain.BankAccount.Events.BankAccountOpened
   alias Commanded.ExampleDomain.BankApp
@@ -35,6 +37,47 @@ defmodule Commanded.Event.BatchResetEventHandlerTest do
 
       Wait.until(fn ->
         assert BankAccountBatchHandler.current_accounts() == ["PREF_ACC123"]
+      end)
+    end
+
+    test "should discard events buffered for a batch before the reset" do
+      stream_uuid = UUID.uuid4()
+
+      handler =
+        start_supervised!({BankAccountBatchHandler, start_from: :current, batch_timeout: 500})
+
+      Wait.until(fn ->
+        assert BankAccountBatchHandler.subscribed?()
+      end)
+
+      %Handler{subscription: %Subscription{subscription_pid: subscription_pid}} =
+        :sys.get_state(handler)
+
+      buffered_events = [%BankAccountOpened{account_number: "ACC123", initial_balance: 1_000}]
+      :ok = EventStore.append_to_stream(BankApp, stream_uuid, 0, to_event_data(buffered_events))
+
+      Wait.until(fn ->
+        assert %Handler{batch_buffer: [_buffered_event]} = :sys.get_state(handler)
+      end)
+
+      :ok = BankAccountBatchHandler.change_prefix("PREF_")
+
+      send(handler, :reset)
+
+      Wait.until(fn ->
+        assert %Handler{subscription: %Subscription{subscription_pid: pid}} =
+                 :sys.get_state(handler)
+
+        refute pid in [nil, subscription_pid]
+      end)
+
+      events_after_reset = [%BankAccountOpened{account_number: "ACC456", initial_balance: 2_000}]
+
+      :ok =
+        EventStore.append_to_stream(BankApp, stream_uuid, 1, to_event_data(events_after_reset))
+
+      Wait.until(2_000, fn ->
+        assert BankAccountBatchHandler.current_accounts() == ["PREF_ACC456"]
       end)
     end
 

@@ -2,6 +2,7 @@ defmodule Commanded.Event.EventHandlerSubscriptionTest do
   use Commanded.MockEventStoreCase
 
   alias Commanded.Event.Handler
+  alias Commanded.Helpers.Wait
 
   defmodule ExampleHandler do
     use Commanded.Event.Handler,
@@ -58,6 +59,101 @@ defmodule Commanded.Event.EventHandlerSubscriptionTest do
       send(handler, :subscribe_to_events)
 
       assert_receive {:subscribed, ^subscription}
+    end
+
+    test "should reset while a subscription retry is pending" do
+      reply_to = self()
+
+      # Both the initial subscription attempt and the attempt made by the reset fail
+      expect(MockEventStore, :subscribe_to, 2, fn
+        _event_store_meta, :all, "ExampleHandler", handler, :origin, _opts ->
+          send(reply_to, {:subscribe_to, handler})
+
+          {:error, :subscription_already_exists}
+      end)
+
+      {:ok, handler} = ExampleHandler.start_link()
+
+      assert_receive {:subscribe_to, ^handler}
+      assert_handler_subscription_timer(handler, 1..3_000)
+
+      Process.unlink(handler)
+      ref = Process.monitor(handler)
+
+      send(handler, :reset)
+
+      assert_receive {:subscribe_to, ^handler}
+      refute_receive {:DOWN, ^ref, :process, ^handler, _reason}
+    end
+
+    test "should reset when the subscription to delete does not exist" do
+      reply_to = self()
+
+      expect(MockEventStore, :subscribe_to, 2, fn
+        _event_store_meta, :all, "ExampleHandler", handler, :origin, _opts ->
+          send(reply_to, {:subscribe_to, handler})
+
+          {:error, :subscription_already_exists}
+      end)
+
+      expect(MockEventStore, :delete_subscription, fn _event_store_meta, :all, "ExampleHandler" ->
+        {:error, :subscription_not_found}
+      end)
+
+      {:ok, handler} = ExampleHandler.start_link()
+
+      assert_receive {:subscribe_to, ^handler}
+      assert_handler_subscription_timer(handler, 1..3_000)
+
+      Process.unlink(handler)
+      ref = Process.monitor(handler)
+
+      send(handler, :reset)
+
+      assert_receive {:subscribe_to, ^handler}
+      refute_receive {:DOWN, ^ref, :process, ^handler, _reason}
+    end
+
+    test "should not subscribe twice when reset while a subscription retry is pending" do
+      reply_to = self()
+
+      expect(MockEventStore, :subscribe_to, fn
+        _event_store_meta, :all, "ExampleHandler", handler, :origin, _opts ->
+          send(reply_to, {:subscribe_to, handler})
+
+          {:error, :subscription_already_exists}
+      end)
+
+      {:ok, handler} = ExampleHandler.start_link()
+
+      assert_receive {:subscribe_to, ^handler}
+
+      %Handler{subscribe_timer: subscribe_timer} = :sys.get_state(handler)
+
+      {:ok, subscription} = start_subscription()
+
+      expect_subscribe_to(subscription)
+
+      stub(MockEventStore, :subscribe_to, fn
+        _event_store_meta, :all, "ExampleHandler", handler, :origin, _opts ->
+          send(reply_to, {:resubscribe_to, handler})
+
+          {:error, :subscription_already_exists}
+      end)
+
+      send(handler, :reset)
+
+      assert_receive {:subscribed, ^subscription}
+
+      Wait.until(4_000, fn ->
+        refute Process.read_timer(subscribe_timer)
+      end)
+
+      # Processed in mailbox order, so a retry that fired before the timer was read has already
+      # been handled by the time this returns
+      :sys.get_state(handler)
+
+      refute_received {:resubscribe_to, ^handler}
     end
   end
 

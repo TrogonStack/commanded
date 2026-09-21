@@ -1064,23 +1064,19 @@ defmodule Commanded.Event.Handler do
     subscription = Subscription.reset(subscription)
 
     # The deleted subscription's process is stopped before `Subscription.reset/1` returns and the
-    # new subscription does not exist yet, so any queued events came from the subscription reset.
-    drain_stale_events()
+    # new subscription does not exist yet, so any queued message came from the deleted
+    # subscription and must not be attributed to its replacement.
+    drain_stale_subscription_messages()
 
-    state = cancel_batch_timer(state)
+    state = state |> cancel_batch_timer() |> cancel_subscribe_timer()
 
-    %Handler{
-      state
-      | last_seen_event: nil,
-        subscription: subscription,
-        subscribe_timer: nil,
-        batch_buffer: []
-    }
+    %Handler{state | last_seen_event: nil, subscription: subscription, batch_buffer: []}
   end
 
-  defp drain_stale_events do
+  defp drain_stale_subscription_messages do
     receive do
-      {:events, _events} -> drain_stale_events()
+      {:events, _events} -> drain_stale_subscription_messages()
+      {:subscribed, _subscription} -> drain_stale_subscription_messages()
     after
       0 -> :ok
     end
@@ -1273,6 +1269,27 @@ defmodule Commanded.Event.Handler do
   defp drain_flush_batch_timeout_message do
     receive do
       :flush_batch_timeout -> :ok
+    after
+      0 -> :ok
+    end
+  end
+
+  defp cancel_subscribe_timer(%Handler{subscribe_timer: nil} = state), do: state
+
+  defp cancel_subscribe_timer(%Handler{subscribe_timer: ref} = state) do
+    case Process.cancel_timer(ref) do
+      false ->
+        drain_subscribe_to_events_message()
+        %Handler{state | subscribe_timer: nil}
+
+      _remaining ->
+        %Handler{state | subscribe_timer: nil}
+    end
+  end
+
+  defp drain_subscribe_to_events_message do
+    receive do
+      :subscribe_to_events -> :ok
     after
       0 -> :ok
     end

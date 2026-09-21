@@ -96,10 +96,20 @@ defmodule Commanded.EventStore.Subscription do
       subscription_ref: subscription_ref
     } = subscription
 
-    Process.demonitor(subscription_ref)
+    # A reset can arrive while a subscribe retry is still pending, in which case nothing has been
+    # monitored, subscribed, or persisted yet.
+    if is_reference(subscription_ref) do
+      Process.demonitor(subscription_ref, [:flush])
+    end
 
-    :ok = EventStore.unsubscribe(application, subscription_pid)
-    :ok = EventStore.delete_subscription(application, subscribe_to, subscription_name)
+    if is_pid(subscription_pid) do
+      :ok = EventStore.unsubscribe(application, subscription_pid)
+    end
+
+    case EventStore.delete_subscription(application, subscribe_to, subscription_name) do
+      :ok -> :ok
+      {:error, :subscription_not_found} -> :ok
+    end
 
     %Subscription{
       subscription
