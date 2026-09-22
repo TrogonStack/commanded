@@ -118,7 +118,7 @@ defmodule Commanded.EventStore.Subscription do
     case EventStore.delete_subscription(application, subscribe_to, subscription_name) do
       :ok -> :ok
       {:error, :subscription_not_found} -> :ok
-      {:error, :subscription_has_subscribers} -> :ok
+      {:error, :still_subscribed} -> :ok
     end
 
     %Subscription{
