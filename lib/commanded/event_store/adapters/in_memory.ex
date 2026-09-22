@@ -289,7 +289,7 @@ defmodule Commanded.EventStore.Adapters.InMemory do
           {:ok, state}
 
         %PersistentSubscription{stream_uuid: ^stream_uuid} ->
-          {{:error, :still_subscribed}, state}
+          {{:error, :subscribers_connected}, state}
 
         nil ->
           {{:error, :subscription_not_found}, state}

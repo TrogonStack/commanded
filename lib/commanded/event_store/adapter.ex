@@ -96,7 +96,7 @@ defmodule Commanded.EventStore.Adapter do
   Delete an existing subscription.
 
   Whether a subscription that still has subscribers can be deleted is adapter specific. The
-  in-memory adapter refuses with `{:error, :still_subscribed}` and leaves them attached; the
+  in-memory adapter refuses with `{:error, :subscribers_connected}` and leaves them attached; the
   EventStore adapter deletes it and disconnects them.
   """
   @callback delete_subscription(
@@ -106,7 +106,7 @@ defmodule Commanded.EventStore.Adapter do
             ) ::
               :ok
               | {:error, :subscription_not_found}
-              | {:error, :still_subscribed}
+              | {:error, :subscribers_connected}
               | {:error, error}
 
   @doc """
