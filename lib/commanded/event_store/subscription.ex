@@ -109,12 +109,6 @@ defmodule Commanded.EventStore.Subscription do
     # Another subscriber can still hold the subscription name, either a sibling of a concurrent
     # handler or an unrelated one this handler has been losing a race against. Its checkpoint is
     # not this handler's to discard, and the reset has to go ahead regardless.
-    #
-    # TODO: the EventStore adapter answers `:ok` instead, having stopped the subscription process
-    # that every subscriber shares before deleting the checkpoint, so the same reset disconnects
-    # them rather than leaving them be. Settling which of the two is the contract means changing
-    # `EventStore.delete_subscription/3`, which exposes no way to ask whether a subscription has
-    # subscribers.
     case EventStore.delete_subscription(application, subscribe_to, subscription_name) do
       :ok -> :ok
       {:error, :subscription_not_found} -> :ok
