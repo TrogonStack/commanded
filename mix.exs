@@ -83,7 +83,7 @@ defmodule Commanded.Mixfile do
       # Optional dependencies
       {:jason, "~> 1.4", optional: true},
       {:phoenix_pubsub, "~> 2.1", optional: true},
-      {:eventstore, "~> 1.4", optional: true},
+      {:eventstore, github: "TrogonStack/commanded_eventstore", tag: "v1.4.9", optional: true},
       {:ecto, "~> 3.11", optional: true},
       {:ecto_sql, "~> 3.11", optional: true},
 
