@@ -59,7 +59,15 @@ defmodule Commanded.OpenTelemetryCase do
         [:commanded, :application, :dispatch, :exception]
       ]
 
-      for event <- commanded_events,
+      eventstore_operations =
+        ~w(append_to_stream delete_snapshot delete_stream delete_subscription link_to_stream paginate_streams read_snapshot read_stream_backward read_stream_forward record_snapshot stream_batch_read subscribe_to_stream)a
+
+      eventstore_events =
+        for op <- eventstore_operations, suffix <- [:start, :stop, :exception] do
+          [:eventstore, op, suffix]
+        end
+
+      for event <- commanded_events ++ eventstore_events,
           handler <- :telemetry.list_handlers(event) do
         :telemetry.detach(handler.id)
       end

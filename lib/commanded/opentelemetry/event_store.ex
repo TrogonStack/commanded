@@ -3,6 +3,7 @@ defmodule Commanded.OpenTelemetry.EventStore do
 
   alias Commanded.Application, as: CommandedApplication
   alias Commanded.OpenTelemetry.CommandedAttributes
+  alias Commanded.OpenTelemetry.EventStore.Adapters
   alias Commanded.OpenTelemetry.Helpers
   alias OpenTelemetry.SemConv.ErrorAttributes
   alias OpenTelemetry.SemConv.Incubating.CodeAttributes
@@ -20,7 +21,7 @@ defmodule Commanded.OpenTelemetry.EventStore do
     stream_forward
   )a
 
-  def setup do
+  def setup(config \\ []) do
     for event <- @events do
       :ok =
         :telemetry.attach_many(
@@ -33,6 +34,10 @@ defmodule Commanded.OpenTelemetry.EventStore do
           &__MODULE__.handle_telemetry_event/4,
           %{}
         )
+    end
+
+    if config[:adapter] == :enabled do
+      Adapters.EventStore.setup()
     end
 
     :ok
