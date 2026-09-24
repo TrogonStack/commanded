@@ -1,6 +1,8 @@
 defmodule Commanded.EventStore.Subscription do
   @moduledoc false
 
+  require Logger
+
   alias Commanded.EventStore
   alias Commanded.EventStore.{RecordedEvent, Subscription}
 
@@ -110,9 +112,26 @@ defmodule Commanded.EventStore.Subscription do
     # handler or an unrelated one this handler has been losing a race against. Its checkpoint is
     # not this handler's to discard, and the reset has to go ahead regardless.
     case EventStore.delete_subscription(application, subscribe_to, subscription_name) do
-      :ok -> :ok
-      {:error, :subscription_not_found} -> :ok
-      {:error, :subscribers_connected} -> :ok
+      :ok ->
+        :ok
+
+      {:error, :subscription_not_found} ->
+        :ok
+
+      {:error, :subscribers_connected} ->
+        :ok
+
+      # TODO: an adapter is allowed to fail the delete for reasons that are neither of the above,
+      # and a reset that carries on leaves the handler reading from a checkpoint it meant to drop.
+      # Decide whether that should fail the reset instead of being reported and continuing.
+      {:error, error} ->
+        Logger.warning(fn ->
+          "Subscription " <>
+            inspect(subscription_name) <>
+            " could not be deleted for reset: " <> inspect(error)
+        end)
+
+        :ok
     end
 
     %Subscription{
