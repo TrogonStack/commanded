@@ -1059,11 +1059,49 @@ defmodule Commanded.Event.Handler do
   end
 
   defp reset_subscription(%Handler{} = state) do
-    %Handler{subscription: subscription} = state
+    %Handler{subscription: %Subscription{subscription_pid: reset_subscription_pid} = subscription} =
+      state
 
     subscription = Subscription.reset(subscription)
 
-    %Handler{state | last_seen_event: nil, subscription: subscription, subscribe_timer: nil}
+    state =
+      state
+      |> discard_messages_from(reset_subscription_pid)
+      |> cancel_batch_timer()
+      |> cancel_subscribe_timer()
+
+    %Handler{state | last_seen_event: nil, subscription: subscription, batch_buffer: []}
+  end
+
+  # `Subscription.reset/1` stops the subscription's process before returning, and the replacement
+  # is not started until `subscribe_to_events/1` runs, so nothing can be delivered while this
+  # drains. `{:subscribed, pid}` identifies its sender and is matched against the subscription
+  # that was reset; `{:events, _}` does not carry one, so it can only be matched by shape.
+  defp discard_messages_from(%Handler{} = state, reset_subscription_pid) do
+    case discard_messages_from(reset_subscription_pid, 0) do
+      0 ->
+        state
+
+      discarded ->
+        Logger.debug(
+          describe(state) <>
+            " discarded #{discarded} message(s) queued by the subscription it reset"
+        )
+
+        state
+    end
+  end
+
+  defp discard_messages_from(reset_subscription_pid, discarded) do
+    receive do
+      {:events, _events} ->
+        discard_messages_from(reset_subscription_pid, discarded + 1)
+
+      {:subscribed, ^reset_subscription_pid} ->
+        discard_messages_from(reset_subscription_pid, discarded + 1)
+    after
+      0 -> discarded
+    end
   end
 
   defp subscribe_to_events(%Handler{} = state) do
@@ -1253,6 +1291,34 @@ defmodule Commanded.Event.Handler do
   defp drain_flush_batch_timeout_message do
     receive do
       :flush_batch_timeout -> :ok
+    after
+      0 -> :ok
+    end
+  end
+
+  defp cancel_subscribe_timer(%Handler{subscribe_timer: nil} = state), do: state
+
+  defp cancel_subscribe_timer(%Handler{subscribe_timer: ref} = state) do
+    case Process.cancel_timer(ref) do
+      false ->
+        drain_subscribe_to_events_message()
+        %Handler{state | subscribe_timer: nil}
+
+      _remaining ->
+        %Handler{state | subscribe_timer: nil}
+    end
+  end
+
+  # `Process.cancel_timer/1` answers `false` once the timer has expired, and by then it has already
+  # delivered `:subscribe_to_events` into this handler's own mailbox, where cancelling can no longer
+  # reach it. Left queued, it outlives the reset and drives a second `subscribe_to_events/1` against
+  # the subscription the reset just established, which fails and re-arms the retry indefinitely.
+  #
+  # The name describes the mechanism rather than the reason; `discard_expired_subscribe_retry/0`
+  # would read better, and is only kept for symmetry with `drain_flush_batch_timeout_message/0`.
+  defp drain_subscribe_to_events_message do
+    receive do
+      :subscribe_to_events -> :ok
     after
       0 -> :ok
     end

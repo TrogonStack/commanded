@@ -94,13 +94,21 @@ defmodule Commanded.EventStore.Adapter do
 
   @doc """
   Delete an existing subscription.
+
+  Whether a subscription that still has subscribers can be deleted is adapter specific: an adapter
+  can refuse with `{:error, :subscribers_connected}` and leave them attached, or delete it and
+  disconnect them. A caller that must not disconnect a subscriber it does not own unsubscribes it
+  first.
   """
   @callback delete_subscription(
               adapter_meta,
               stream_uuid | :all,
               subscription_name
             ) ::
-              :ok | {:error, :subscription_not_found} | {:error, error}
+              :ok
+              | {:error, :subscription_not_found}
+              | {:error, :subscribers_connected}
+              | {:error, error}
 
   @doc """
   Read a snapshot, if available, for a given source.
