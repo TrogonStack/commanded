@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.1](https://github.com/TrogonStack/commanded/compare/v3.8.0...v3.8.1) (2026-11-04)
+
+
+### Bug Fixes
+
+* **aggregate:** Seed snapshot version from the restored snapshot ([#113](https://github.com/TrogonStack/commanded/issues/113)) ([fc5af16](https://github.com/TrogonStack/commanded/commit/fc5af16cf2a03d7637cecface9c1c87b4faebc48))
+
 ## [3.8.0](https://github.com/TrogonStack/commanded/compare/v3.7.1...v3.8.0) (2026-09-24)
 
 
