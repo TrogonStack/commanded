@@ -126,7 +126,19 @@ defmodule Commanded.OpenTelemetry do
                      doc: "Event handler tracing configuration. Use `:disabled` to disable."
                    ],
                    event_store: [
-                     type: {:in, [:disabled, []]},
+                     type:
+                       {:or,
+                        [
+                          {:in, [:disabled]},
+                          keyword_list: [
+                            adapter: [
+                              type: {:in, [:enabled, :disabled]},
+                              default: :disabled,
+                              doc:
+                                "Hook into the telemetry events emitted by the event store adapter. Use `:enabled` to enable."
+                            ]
+                          ]
+                        ]},
                      default: [],
                      doc: "Event store tracing configuration. Use `:disabled` to disable."
                    ]
@@ -174,6 +186,9 @@ defmodule Commanded.OpenTelemetry do
       # Disable event store tracing
       Commanded.OpenTelemetry.setup(event_store: :disabled)
 
+      # Enable event store adapter tracing (hooks into adapter-level telemetry)
+      Commanded.OpenTelemetry.setup(event_store: [adapter: :enabled])
+
       # Use parent-child relationships for event handlers
       Commanded.OpenTelemetry.setup(event_handler: [span_relationship: :child])
 
@@ -209,7 +224,7 @@ defmodule Commanded.OpenTelemetry do
 
     case opts[:event_store] do
       :disabled -> :ok
-      _config -> EventStore.setup()
+      config -> EventStore.setup(config)
     end
 
     :ok

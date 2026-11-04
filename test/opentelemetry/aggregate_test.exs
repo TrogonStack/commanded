@@ -860,16 +860,11 @@ defmodule Commanded.OpenTelemetry.AggregateTest do
 
   defp detach_event_store_handlers do
     event_store_events = ~w(
-      ack_event
       append_to_stream
       delete_snapshot
-      delete_subscription
       read_snapshot
       record_snapshot
       stream_forward
-      subscribe
-      subscribe_to
-      unsubscribe
     )a
 
     for event <- event_store_events,

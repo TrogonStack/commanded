@@ -240,4 +240,34 @@ defmodule Commanded.OpenTelemetry.CommandedAttributes do
   """
   @spec commanded_stream_batch_size() :: :"commanded.stream.batch_size"
   def commanded_stream_batch_size, do: :"commanded.stream.batch_size"
+
+  @doc """
+  Number of events read from a stream.
+  """
+  @spec eventstore_read_count() :: :"eventstore.read.count"
+  def eventstore_read_count, do: :"eventstore.read.count"
+
+  @doc """
+  The version number to start reading a stream from (EventStore adapter).
+  """
+  @spec eventstore_stream_start_version() :: :"eventstore.stream.start_version"
+  def eventstore_stream_start_version, do: :"eventstore.stream.start_version"
+
+  @doc """
+  The direction of a stream read (:forward or :backward).
+  """
+  @spec eventstore_stream_direction() :: :"eventstore.stream.direction"
+  def eventstore_stream_direction, do: :"eventstore.stream.direction"
+
+  @doc """
+  The batch size used when reading events from a stream (EventStore adapter).
+  """
+  @spec eventstore_stream_batch_size() :: :"eventstore.stream.batch_size"
+  def eventstore_stream_batch_size, do: :"eventstore.stream.batch_size"
+
+  @doc """
+  The type of stream deletion (soft or hard).
+  """
+  @spec eventstore_stream_delete_type() :: :"eventstore.stream.delete_type"
+  def eventstore_stream_delete_type, do: :"eventstore.stream.delete_type"
 end
