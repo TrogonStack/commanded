@@ -91,7 +91,8 @@ defmodule Commanded.Aggregates.AggregateStateBuilder do
           agg = %Aggregate{
             state
             | aggregate_version: source_version,
-              aggregate_state: data
+              aggregate_state: data,
+              snapshotting: %{snapshotting | snapshot_version: source_version}
           }
 
           {agg, true, source_version}
