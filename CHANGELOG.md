@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.2](https://github.com/TrogonStack/commanded/compare/v3.8.1...v3.8.2) (2026-11-08)
+
+
+### Bug Fixes
+
+* **ci:** Give the Releaser key step its project ([#116](https://github.com/TrogonStack/commanded/issues/116)) ([49b9185](https://github.com/TrogonStack/commanded/commit/49b9185abcbc97e3ab48ac4b965acc1bd50c6462))
+
 ## [3.8.1](https://github.com/TrogonStack/commanded/compare/v3.8.0...v3.8.1) (2026-11-04)
 
 
