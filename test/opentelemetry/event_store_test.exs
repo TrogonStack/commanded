@@ -221,6 +221,24 @@ defmodule Commanded.OpenTelemetry.EventStoreTest do
                "db.system": :in_memory
              }
     end
+
+    test "append_to_stream marks the span as an error when the expected version is stale", %{
+      destination_name: destination_name
+    } do
+      stream_uuid = UUID.uuid4()
+      span_name = "append_to_stream #{destination_name}"
+
+      assert :ok = EventStore.append_to_stream(DefaultApp, stream_uuid, 0, build_events(1))
+      _ = assert_receive_span_named(span_name)
+
+      assert {:error, :wrong_expected_version} =
+               EventStore.append_to_stream(DefaultApp, stream_uuid, 0, build_events(1))
+
+      assert span(status: {:status, :error, ":wrong_expected_version"}, attributes: attributes) =
+               assert_receive_span_named(span_name)
+
+      assert %{"error.type": ":wrong_expected_version"} = :otel_attributes.map(attributes)
+    end
   end
 
   describe "defensive destination lookup" do
