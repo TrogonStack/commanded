@@ -100,8 +100,8 @@ defmodule Commanded.EventStore do
              start_version,
              read_batch_size
            ) do
-        {:error, _error} = error ->
-          stream_forward_stop(start_monotonic, meta)
+        {:error, reason} = error ->
+          stream_forward_stop(start_monotonic, Map.put(meta, :error, reason))
           error
 
         stream when is_list(stream) ->

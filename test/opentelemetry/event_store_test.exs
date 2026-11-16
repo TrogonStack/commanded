@@ -198,15 +198,18 @@ defmodule Commanded.OpenTelemetry.EventStoreTest do
              }
     end
 
-    test "missing streams still keep the real destination on the span", %{
+    test "stream_forward marks the span as an error when the stream is missing", %{
       destination_name: destination_name
     } do
       stream_uuid = UUID.uuid4()
 
       assert {:error, :stream_not_found} = EventStore.stream_forward(DefaultApp, stream_uuid)
 
-      assert span(kind: :client, attributes: attributes) =
-               assert_receive_span_named("stream_forward #{destination_name}")
+      assert span(
+               kind: :client,
+               status: {:status, :error, ":stream_not_found"},
+               attributes: attributes
+             ) = assert_receive_span_named("stream_forward #{destination_name}")
 
       assert :otel_attributes.map(attributes) == %{
                "messaging.system": "commanded",
@@ -218,7 +221,8 @@ defmodule Commanded.OpenTelemetry.EventStoreTest do
                "commanded.stream.uuid": stream_uuid,
                "commanded.stream.start_version": 0,
                "commanded.stream.batch_size": 1000,
-               "db.system": :in_memory
+               "db.system": :in_memory,
+               "error.type": ":stream_not_found"
              }
     end
 
