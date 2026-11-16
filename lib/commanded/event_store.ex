@@ -319,7 +319,10 @@ defmodule Commanded.EventStore do
   # TODO convert to macro
   defp span(event, meta, func) do
     :telemetry.span([:commanded, :event_store, event], meta, fn ->
-      {func.(), meta}
+      case func.() do
+        {:error, reason} = result -> {result, Map.put(meta, :error, reason)}
+        result -> {result, meta}
+      end
     end)
   end
 
